@@ -24,7 +24,7 @@ specified layers will be updated.
 To speed up processing, layers can be processed over multiple CPUs.    
 
 Code has only been tested on Linux OS. If running on Windows there may be formatting
-issues with reading/writing to files. 
+issues with reading/writing to files.  
 
 Brittin, Cook, Hall, Cohen, Emmons. 'Volumetric reconstruction of 
 Caenorhabditis elegans nerve ring supports combinatorial CAM expression 
@@ -90,6 +90,10 @@ def time_string(_seconds):
     seconds = _seconds
     return "%d:%d:%d:%d" % (day, hour, minutes, seconds)
 
+def submit_batch(P,o):
+    adj = P.batch_compute_adjacency(o)
+    return adj
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -212,7 +216,7 @@ if __name__ == '__main__':
         else:
             overlap_split = [overlap[i::params.nproc] for i in range(params.nproc)]
             pool = mp.Pool(processes = params.nproc)
-            results = [pool.apply_async(P.batch_compute_adjacency,args=(o,))
+            results = [pool.apply_async(submit_batch,args=(P,o,))
                        for o in overlap_split]
             adj = [o for p in results for o in p.get()]
 
