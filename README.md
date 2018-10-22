@@ -1,6 +1,6 @@
 # parsetrakem2
 Python code for parsing [TrakEM2](https://imagej.net/TrakEM2) files. 
-The code is intended to link TrakEM2 data with [wormwiring.org](https://wormwiring.org) data.
+The code is intended to link TrakEM2 data with [wormwiring.org](http://wormwiring.org/) data.
 
 ## Installation
 Clone or download respository. Make sure to maintain the relative paths.
