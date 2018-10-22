@@ -74,7 +74,7 @@ Examples:
 import sys
 import os
 import argparse
-import multiprocessing as mp
+import multiprocessing_on_dill as mp
 import time
 from lxml import etree
 
