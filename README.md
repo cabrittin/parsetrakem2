@@ -12,6 +12,7 @@ Numpy v1.15.2
 Scipy v1.1.0
 Matplotlib v3.0.0
 lxml v4.2.5
+multiprocessing-on-dill v3.5.0a4
 ```
 
 ## Usage
