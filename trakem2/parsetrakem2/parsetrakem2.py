@@ -310,7 +310,6 @@ class ParseTrakEM2(object):
         XB = np.array(B.path)
         Y = cdist(XA,XB,'euclidean')
         I = np.where(Y <= pixel_radius)
-        #print(len(I[0]),len(I[0])/2,XA.shape,XB.shape,Y.shape)
         adj = min(len(set(I[0])),len(set(I[1])))
         return adj
 

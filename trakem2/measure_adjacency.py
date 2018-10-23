@@ -90,8 +90,8 @@ def time_string(_seconds):
     seconds = _seconds
     return "%d:%d:%d:%d" % (day, hour, minutes, seconds)
 
-def submit_batch(P,o):
-    adj = P.batch_compute_adjacency(o)
+def submit_batch(P,o,pixel_radius):
+    adj = P.batch_compute_adjacency(o,pixel_radius)
     return adj
     
 if __name__ == '__main__':
@@ -212,11 +212,13 @@ if __name__ == '__main__':
         overlap = P.get_overlapping_boundaries(B)        
 
         if params.nproc == 1:
-            adj = P.batch_compute_adjacency(overlap)
+            adj = P.batch_compute_adjacency(overlap,
+                                            pixel_radius=params.pixel_radius)
         else:
             overlap_split = [overlap[i::params.nproc] for i in range(params.nproc)]
             pool = mp.Pool(processes = params.nproc)
-            results = [pool.apply_async(submit_batch,args=(P,o,))
+            results = [pool.apply_async(submit_batch,
+                                        args=(P,o,params.pixel_radius,))
                        for o in overlap_split]
             adj = [o for p in results for o in p.get()]
 
