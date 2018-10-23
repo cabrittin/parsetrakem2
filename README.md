@@ -14,7 +14,7 @@ Matplotlib v3.0.0
 lxml v4.2.5
 multiprocessing-on-dill v3.5.0a4
 ```
-Note that multiprocessing appears to work on Python 3.5 but not on 3.6 and 3.7.
+**Note that multiprocessing appears to work on Python 3.5 but not on 3.6 and 3.7. So keep this in mind when choosing a python version. 
 ## Usage
 
 The following outline the included scripts and provide instructions of basic usage. 
