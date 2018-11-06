@@ -38,6 +38,26 @@ Format of the csv is as follows:
 cell_1,cell_2,index_1,index_2,layer_name,adjacency_length
 ```
 
+### Set area list colors
+To change colors of area lists in a TrakEM2 file.
+```
+python set_class_colors.py -t ../data/trakem2_n2u/n2u_vol.xml -n ../mat/neuron_category_pub.txt -c ../mat/color_code.txt -o ../data/trakem2_n2u/n2u_brittin.xml
+```
+where the neuron category files has the format
+```
+cell_name,cell_class
+```
+and the color code file has the format
+```
+cell_class,html_color
+```
+**Note that the output xml file will not have the proper header for TrakEM2 to read the file directly. In linux you can cat the header as follows
+```
+cat /mat/header.txt output.xml > trakem2_readable.xml
+```
+where output.xml is the output file produced by this script and
+trakem2_readable is the file read by trakem2.
+
 ## Author
 
 * **Christopher Brittin** - *Initial work* - [cabrittin](https://github.com/cabrittin)
