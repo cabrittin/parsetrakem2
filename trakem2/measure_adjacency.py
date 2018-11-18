@@ -198,12 +198,11 @@ if __name__ == '__main__':
     with open(params.fout,'wb') as fout:
             fout.write(xml_out)
 
-    
 
     print('Processing layers...')
     N = len(layers)
     idx = 0
-    _end = '\r'
+    __end = '\r'
     time0 = time.time()
     for l in layers:
         time1 = time.time()
@@ -238,17 +237,17 @@ if __name__ == '__main__':
             xadj.text = str(_adj)             
             
         idx += 1
-        if idx == N: _end = '\n'
+        if idx == N: __end = '\n'
         proc_time = time_string(time.time() - time0)
         print("Processed %d/%d layers. Last layer processed: %s. "
               "Found %d adjacencies. " 
               "Time to process last layer: %2.3f sec. "
               "Total processing time: %s. "
-              %(idx,N,l,len(adj),time.time() - time1,proc_time),end=_end)
+              %(idx,N,l,len(adj),time.time() - time1,proc_time),end=__end)
     
-    xml_out = etree.tostring(tree,pretty_print=False)
-    with open(params.fout,'wb') as fout:
-            fout.write(xml_out)   
+        xml_out = etree.tostring(tree,pretty_print=False)
+        with open(params.fout,'wb') as fout:
+            fout.write(xml_out)
     print('Finished!')
 
     
