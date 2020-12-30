@@ -1,5 +1,9 @@
 # parsetrakem2
 Python code for parsing [TrakEM2](https://imagej.net/TrakEM2) files. 
+
+This is the accompanying code for 
+Brittin, C. A. , Cook, S. J., Hall, D.H., Emmons, S. W., Cohen. N. A multiscale brain map derived from whole-brain volumetric reconstructions. Nature (in press). [biorxiv](https://doi.org/10.1101/2020.05.24.112870)
+
 The code is intended to link TrakEM2 data with [wormwiring.org](http://wormwiring.org/) data.
 
 ## Installation
@@ -24,14 +28,14 @@ Main scripts are located in trakem2/.  Test scripts are located in test/.
 ### Measure adjacency
 To measure adjacency of segmented TrakEM2 file use measure_adjacency.py:
 ```
-python measure_adjacency.py /path/to/trakem2.xml /path/to/output.xml
+python scripts/measure_adjacency.py /path/to/trakem2.xml /path/to/output.xml
 ```
 Adjacency data is written to an xml file which can be easily updated. Script can be run in parallel over muliple CPU(s).
 
 ### Convert xml output to csv
 For convenience, the xml2csv.py will convert the output xml from measure_adjacency.py to csv format:
 ```
-python xml2csv.py /path/to/xml /path/to/csv
+python scripts/xml2csv.py /path/to/xml /path/to/csv
 ```
 Format of the csv is as follows:
 ```
@@ -41,7 +45,7 @@ cell_1,cell_2,index_1,index_2,layer_name,adjacency_length
 ### Set area list colors
 To change colors of area lists in a TrakEM2 file.
 ```
-python set_class_colors.py -t ../data/trakem2_n2u/n2u_vol.xml -n ../mat/neuron_category_pub.txt -c ../mat/color_code.txt -o ../data/trakem2_n2u/n2u_brittin.xml
+python scripts/set_class_colors.py -t ../data/trakem2_n2u/n2u_vol.xml -n ../mat/neuron_category_pub.txt -c ../mat/color_code.txt -o ../data/trakem2_n2u/n2u_vol_modified.xml
 ```
 where the neuron category files has the format
 ```
@@ -49,7 +53,7 @@ cell_name,cell_class
 ```
 and the color code file has the format
 ```
-cell_class,html_color
+cell_class,html_color,color_intensity
 ```
 **Note that the output xml file will not have the proper header for TrakEM2 to read the file directly. In linux you can cat the header as follows
 ```
@@ -57,6 +61,11 @@ cat /mat/header.txt output.xml > trakem2_readable.xml
 ```
 where output.xml is the output file produced by this script and
 trakem2_readable is the file read by trakem2.
+
+## Extract centroid and area of each neurite segment 
+```
+python scripts/extract_segmentation_stats.py trakem2_xml_file output file
+```
 
 ## Author
 
