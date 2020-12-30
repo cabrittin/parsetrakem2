@@ -62,7 +62,7 @@ cat /mat/header.txt output.xml > trakem2_readable.xml
 where output.xml is the output file produced by this script and
 trakem2_readable is the file read by trakem2.
 
-## Extract centroid and area of each neurite segment 
+### Extract centroid and area of each neurite segment 
 ```
 python scripts/extract_segmentation_stats.py trakem2_xml_file output file
 ```
