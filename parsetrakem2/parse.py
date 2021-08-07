@@ -71,16 +71,18 @@ class ParseTrakEM2(object):
     """
 
     
-    def __init__(self,trakem2):
+    def __init__(self,trakem2,huge_tree=False):
         """
         Parameters:
         ----------
         trakem2 : str
            path to trakem2 file
+        huge_tree : bool, Optional, default False
+           If loading a large file, use True
         """
         
         self.trakem2 = trakem2
-        parser = etree.XMLParser(remove_blank_text=True)
+        parser = etree.XMLParser(remove_blank_text=True,huge_tree=huge_tree)
         self.xml = etree.parse(trakem2,parser)
         self.layers = None
         self.area_list = None

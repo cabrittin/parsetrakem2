@@ -25,7 +25,7 @@ import os
 import argparse
 from lxml import etree
 
-from trakem2.parse import ParseTrakEM2
+from parsetrakem2.parse import ParseTrakEM2
 
     
 if __name__ == '__main__':
@@ -49,12 +49,21 @@ if __name__ == '__main__':
                                 "considered in the adajancency analysis. "
                                 "DEFAULT = 200. "))    
     
+    parser.add_argument('--huge_tree',
+                        dest='huge_tree',
+                        action='store_true',
+                        default=False,
+                        required=False,
+                        help=("Set flag if loading a large xml file, i.e. if lxml "
+                            "throws a 'use XML_PARSE_HUGE option' error.")
+                        )
+
     params = parser.parse_args()
 
     print('TrakEM2 file: %s' %params.trakem2)
     print('Writing to file: %s' %params.fout)
     print('Loading TrakEM2 file...')
-    P = ParseTrakEM2(params.trakem2)
+    P = ParseTrakEM2(params.trakem2, huge_tree=params.huge_tree)
     P.get_layers()
     print('Extracted %d layers.' %(len(P.layers)))
     P.get_area_lists()
