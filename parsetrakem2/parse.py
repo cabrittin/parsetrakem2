@@ -185,7 +185,7 @@ class ParseTrakEM2(object):
     
     def get_boundaries_in_layer(self,layer,scale_bounding_box=1,
                                 area_thresh = 200,
-                                area_lists = None):
+                                area_lists = []):
         """
         Returns a dictionary of boundaries for the area lists in layer.
 
@@ -213,7 +213,6 @@ class ParseTrakEM2(object):
          boundary[name] = {0:Boundary(object), 1:Boundary(object)...}
 
         """
-        area_lists = []
         layer = self.layers[layer]
         if not area_lists: area_lists = self.area_lists.keys()
         boundary = {}
