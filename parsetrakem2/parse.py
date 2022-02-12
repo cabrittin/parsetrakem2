@@ -15,6 +15,7 @@ import lxml.etree as etree
 import itertools
 import numpy as np
 from scipy.spatial.distance import cdist
+import scipy.ndimage
 
 class ParseTrakEM2(object):
     """
@@ -107,6 +108,8 @@ class ParseTrakEM2(object):
         trans = self.xml.xpath("//t2_patch/@transform")
         width = self.xml.xpath("//t2_patch/@width")
         height = self.xml.xpath("//t2_patch/@height")
+        self.width = int(float(width[0]))
+        self.height = int(float(height[0]))
         self.layers = {}
         for i in range(len(oid)):
             temp = trans[i].split(',')
@@ -119,7 +122,17 @@ class ParseTrakEM2(object):
             L.thickness = thickness[i]
             L.z = float(z[i])
             self.layers[L.name] = L
-                    
+
+
+    def get_layer_list(self):
+        return self.layers
+    
+    def get_layer_dims(self):
+        return [self.height,self.width]
+    
+    def get_cells(self):
+        return [v.name for (k,v) in self.area_lists.items()]
+
     def get_area_lists(self):
         """
         Assigns dictionary of AreaList(objects) to self.area_lists
@@ -551,7 +564,7 @@ class Boundary(object):
         self.width = self.bounding_box[1][0] - self.bounding_box[0][0] + 1
         self.height = self.bounding_box[1][1] - self.bounding_box[0][1] + 1
         
-    def fill_boundary_gaps(self):
+    def fill_boundary_gaps_0(self):
         """
         Fills any gaps in the boundary path to make it continous
         """
@@ -576,10 +589,30 @@ class Boundary(object):
                 ud = range(c1[0],c2[0] + 1)
             for x in ud:
                 cnts.append((x,c2[1]))
+        print(len(zB),len(cnts))
         self.path = cnts
+    
+    def fill_boundary_gaps(self):
+        zB = list(zip(self.path[:-1],self.path[1:]))
+        zB.append((self.path[-1],self.path[0]))
+        cnts = []
+        for (c1,c2) in zB:
+            if c2[1] == c1[1]:
+                p0,p1 = c1,c2
+                if c2[0] < c1[0]: p0,p1 = c2,c1
+                for y in range(int(p0[0]),int(p1[0]) + 1):
+                    cnts.append((int(y),int(c2[1])))
+            else:
+                m = float((c2[0] - c1[0])) / (c2[1] - c1[1])
+                p0,p1 = c1,c2
+                if c2[1] < c1[1]: p0,p1 = c2,c1
+                for x in range(int(p0[1]),int(p1[1])+1):
+                    y = int(m*(x-p0[1])) + p0[0]
+                    cnts.append((int(y),int(x)))
+            self.path = cnts
 
         
-    def get_display_matrix(self):
+    def get_local_display_matrix(self):
         """
         Returns a matrix A with the dimensions of the bounding box.
         A[i,j] = 1 if it is a boundary point and A[i,j] = 0 otherwise.
@@ -590,7 +623,21 @@ class Boundary(object):
             j = x - minx
             i = y - miny
             A[i,j] = 1
+        A[A>0] = 1
+        A = scipy.ndimage.binary_fill_holes(A)
+        return A
+    
+    def get_global_display_matrix(self,height,width):
+        """
+        Returns a matrix A with the dimensions of the bounding box.
+        A[i,j] = 1 if it is a boundary point and A[i,j] = 0 otherwise.
+        """
+        A = np.zeros((height,width)) 
+        for (x,y) in self.path:
+            j = x
+            i = y
+            A[i,j] = 1
+        A[A>0] = 1
+        A = scipy.ndimage.binary_fill_holes(A)
         return A
             
-        
-        
