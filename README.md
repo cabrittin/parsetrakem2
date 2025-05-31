@@ -20,6 +20,14 @@ lxml v4.2.5
 multiprocessing-on-dill v3.5.0a4
 ```
 **Note that multiprocessing appears to work on Python 3.5 but not on 3.6 and 3.7. So keep this in mind when choosing a python version. 
+
+### 20250531 UPDATE:
+Use of the aux module is deprecated. Now using pycsvparser. In local environment pip install with
+
+```
+pip3 install pycsvparser @ git+https://github.com/cabrittin/pycsvparser.git@7a809bb74bd0313d7cd09b7a52e3eca3f9c1d926
+```
+
 ## Usage
 
 The following outline the included scripts and provide instructions of basic usage. 

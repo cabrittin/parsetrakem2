@@ -38,8 +38,10 @@ Parameters:
 import argparse
 
 #Local modules
-import aux
+from pycsvparser import read
 from parsetrakem2.parse import ParseTrakEM2
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__,
@@ -80,8 +82,8 @@ if __name__ == '__main__':
                         )
     
     params = parser.parse_args()
-    nclass = aux.read.into_dict(params.nclass)
-    color = aux.read.into_dict2(params.color)
+    nclass = read.into_dict(params.nclass)
+    color = read.into_dict(params.color,multi_dim=True)
     P = ParseTrakEM2(params.trakem2)
     P.get_area_lists()
     cols = []
